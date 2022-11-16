@@ -283,6 +283,7 @@ public class Ffi {
 
   protected Ffi() {
     String platform = System.getProperty("os.name").toLowerCase();
+    String arch = System.getProperty("aarch64").toLowerCase();
     String path = null;
     String prefix = null;
     String suffix = null;
@@ -295,6 +296,10 @@ public class Ffi {
       path = "macos/libpolar.dylib";
       prefix = "libpolar";
       suffix = ".dylib";
+    } else if (platform.contains("linux") && arch.contains("aarch64")) {
+      path = "linux/libpolar-arm.so";
+      prefix = "libpolar-arm";
+      suffix = ".so";
     } else {
       path = "linux/libpolar.so";
       prefix = "libpolar";

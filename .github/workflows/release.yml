@@ -47,20 +47,15 @@ jobs:
       - name: Rename static ARM lib
         run: mv target/aarch64-unknown-linux-gnu/release/libpolar.a target/libpolar-${{runner.os}}-arm.a
       - name: Rename dynamic lib
-        run: mv target/release/libpolar.so target/libpolar-${{runner.os}}.so
+        run: mv target/release/libpolar.so target/libpolar.so
       - name: Rename dynamic ARM lib
-        run: mv target/aarch64-unknown-linux-gnu/release/libpolar.so target/libpolar-${{runner.os}}-arm.so
-      - name: Merge static libs into fat static lib
-        run: lipo -create target/libpolar-${{runner.os}}.a target/libpolar-${{runner.os}}-arm.a -output target/libpolar-linux-fat.a
-      - name: Merge dynamic libs into fat dynamic lib
-        run: lipo -create target/libpolar-${{runner.os}}-arm.so target/libpolar-${{runner.os}}-arm.so -output target/libpolar-linux-fat.so
+        run: mv target/aarch64-unknown-linux-gnu/release/libpolar.so target/libpolar-arm.so
       - uses: actions/upload-artifact@v2
         with:
           name: oso_library
           path: |
-            target/libpolar-${{runner.os}}.so
-            target/libpolar-${{runner.os}}-arm.so
-            target/libpolar-linux-fat.so
+            target/libpolar.so
+            target/libpolar-arm.so
       - uses: actions/upload-artifact@v2
         with:
           name: oso_library
@@ -69,7 +64,6 @@ jobs:
         with:
           name: oso_static_library
           path: |
-            target/libpolar-linux-fat.a
             target/libpolar-${{runner.os}}.a
             target/libpolar-${{runner.os}}-arm.a
       - uses: actions/upload-artifact@v2
@@ -149,7 +143,8 @@ jobs:
       - name: Copy libraries into resources.
         run: |
           mkdir -p languages/java/oso/src/main/resources/linux
-          cp -r target/libpolar-linux-fat.so languages/java/oso/src/main/resources/linux/
+          cp -r target/libpolar.so languages/java/oso/src/main/resources/linux/
+          cp -r target/libpolar-arm.so languages/java/oso/src/main/resources/linux/
           mkdir -p languages/java/oso/src/main/resources/macos
           cp -r oso_library/libpolar-macOS-fat.dylib languages/java/oso/src/main/resources/macos/libpolar.dylib
       - name: Test
