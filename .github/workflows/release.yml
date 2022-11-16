@@ -143,8 +143,8 @@ jobs:
       - name: Copy libraries into resources.
         run: |
           mkdir -p languages/java/oso/src/main/resources/linux
-          cp -r target/libpolar.so languages/java/oso/src/main/resources/linux/
-          cp -r target/libpolar-arm.so languages/java/oso/src/main/resources/linux/
+          cp -r oso_library/libpolar.so languages/java/oso/src/main/resources/linux/
+          cp -r oso_library/libpolar-arm.so languages/java/oso/src/main/resources/linux/
           mkdir -p languages/java/oso/src/main/resources/macos
           cp -r oso_library/libpolar-macOS-fat.dylib languages/java/oso/src/main/resources/macos/libpolar.dylib
       - name: Test
