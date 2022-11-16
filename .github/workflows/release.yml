@@ -27,13 +27,6 @@ jobs:
     needs: [version]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-release-${{ hashFiles('**/Cargo.lock') }}
       - name: Install Rust stable toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -42,9 +35,13 @@ jobs:
           override: true
       - name: Build release libraries
         run: |
-          rustup target add aarch64-unknown-linux-gnu
           cargo build --release -p polar-c-api
-          cargo build --target aarch64-unknown-linux-gnu --release -p polar-c-api
+      - name: Build ARM target
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --target aarch64-unknown-linux-gnu --release -p polar-c-api
       - name: Rename static lib
         run: mv target/release/libpolar.a target/libpolar-${{runner.os}}.a
       - name: Rename static ARM lib
