@@ -283,7 +283,7 @@ public class Ffi {
 
   protected Ffi() {
     String platform = System.getProperty("os.name").toLowerCase();
-    String arch = System.getProperty("aarch64").toLowerCase();
+    String arch = System.getProperty("os.arch").toLowerCase();
     String path = null;
     String prefix = null;
     String suffix = null;
